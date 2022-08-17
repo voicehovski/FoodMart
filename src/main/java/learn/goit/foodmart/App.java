@@ -5,10 +5,13 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) {
         System.out.println(new App().buy("ADDDACCABA"));
+        System.out.println(new App().buy("ABCDABA"));
+        //System.out.println(new App().buy("ABCDABAX"));
+        System.out.println(new App().buy(""));
     }
 
     public int buy (String productIds) {
-        Cart cart = new Cart ();
+        Cart cart = new Cart (new DataSource());
         for (char id : productIds.toCharArray()) {
             cart .add ( id );
         }
@@ -21,8 +24,5 @@ public class App {
         }
 
         return total;
-        //Arrays.stream(cart.get())
-        //        .map(orderItem -> CostCalculator.create(orderItem.getProduct(),orderItem.getCount()))
-        //        .reduce()
     }
 }

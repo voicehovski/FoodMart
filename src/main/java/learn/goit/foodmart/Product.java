@@ -3,13 +3,13 @@ package learn.goit.foodmart;
 public class Product {
     private char id;
     private int price;
-    private int specPriceMinCount;
+    private int specPriceCount;
     private int specPrice;
 
-    public Product(char id, int price, int specPriceMinCount, int specPrice) {
+    public Product(char id, int price, int specPriceCount, int specPrice) {
         this.id = id;
         this.price = price;
-        this.specPriceMinCount = specPriceMinCount;
+        this.specPriceCount = specPriceCount;
         this.specPrice = specPrice;
     }
 
@@ -18,7 +18,7 @@ public class Product {
     }
 
     public boolean hasSpecialPrice () {
-        return specPrice == -1;
+        return specPriceCount > 0 && specPrice > 0;
     }
 
     public int getPrice (){
@@ -30,6 +30,6 @@ public class Product {
     }
 
     public int getSpecPriceCount() {
-        return specPriceMinCount;
+        return specPriceCount;
     }
 }

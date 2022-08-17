@@ -7,7 +7,7 @@ public class SpecialCostCalculator implements CostCalculator {
     }
     @Override
     public int calc(Product product, int count) {
-        return productCount == count ? product.getSpecPrice() : product .getPrice();
+        return productCount == count ? product.getSpecPrice() : product .getPrice() * count;
         //return product .correspondSpecPriceCondition(count) ? product.getSpecPrice() : product .getPrice();
     }
 }

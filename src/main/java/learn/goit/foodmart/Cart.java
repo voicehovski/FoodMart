@@ -7,7 +7,11 @@ import java.util.stream.Collectors;
 
 public class Cart {
     private Map<Character,Integer> items = new HashMap<>();
-    private DataSource dataSource = new DataSource();
+    private DataSource dataSource;
+
+    public Cart(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void add (char id) {
         if (items.containsKey(id)) {
@@ -21,5 +25,9 @@ public class Cart {
         return items.entrySet().stream()
                 .map(entry -> new OrderItem(dataSource.read(entry.getKey()),entry.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    public Map<Character,Integer> getMap () {
+        return items;
     }
 }
