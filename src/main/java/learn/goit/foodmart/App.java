@@ -6,6 +6,7 @@ public class App {
     public static void main(String[] args) {
         System.out.println(new App().buy("ADDDACCABA"));
         System.out.println(new App().buy("ABCDABA"));
+        // Здесь будет предусмотренное исключение, поскольку артикула X в базе нет
         //System.out.println(new App().buy("ABCDABAX"));
         System.out.println(new App().buy(""));
     }

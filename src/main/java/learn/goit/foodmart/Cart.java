@@ -1,5 +1,6 @@
 package learn.goit.foodmart;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,15 @@ public class Cart {
     }
 
     public List<OrderItem> get () {
-        return items.entrySet().stream()
-                .map(entry -> new OrderItem(dataSource.read(entry.getKey()),entry.getValue()))
-                .collect(Collectors.toList());
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (Map.Entry<Character,Integer> entry : items.entrySet()) {
+            Product product = dataSource.read(entry.getKey());
+            if (product == null) {
+                throw new RuntimeException("Unknown product [" + entry.getKey() + "]");
+            }
+            orderItems.add (new OrderItem(product, entry.getValue()));
+        }
+        return orderItems;
     }
 
     public Map<Character,Integer> getMap () {
