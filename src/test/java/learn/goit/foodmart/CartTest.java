@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CartTest {
@@ -25,6 +24,18 @@ class CartTest {
         cart.add('A');
         cart.add('B');
         cart.add('C');
+        cart.add('B');
+        cart.add('B');
+
+        return cart;
+    }
+
+    private Cart createCartWithMissingProduct () {
+        Cart cart = new Cart(dataSource);
+        cart.add('A');
+        cart.add('A');
+        cart.add('B');
+        cart.add('D');
         cart.add('B');
         cart.add('B');
 
@@ -46,13 +57,57 @@ class CartTest {
     }
 
     @Test
-    void test1(){
+    void testGetCallsDataSourceReadOneTimeForEveryArgument(){
         Cart cart = createCart();
+
+        when(dataSource.read(anyChar()))
+                .thenReturn(new Product ('A', 15, 3, 30))
+                .thenReturn(new Product ('B', 15, 3, 30))
+                .thenReturn(new Product ('C', 15, 3, 30));
+
         cart.get();
 
-        verify(dataSource, times(1)).read('A');
+        verify(dataSource, times(3)).read(anyChar());
+    }
+
+    @Test
+    void testGetThrowsExceptionWhenProductEqNullForExampleIfWrongId(){
+        Cart cart = createCartWithMissingProduct();
+
+        when(dataSource.read('A'))
+                .thenReturn(new Product ('A', 15, 3, 30));
+        when(dataSource.read('B'))
+                .thenReturn(new Product ('B', 15, 3, 30));
+        //when(dataSource.read('D'))
+                //.thenReturn(null);
+
+                //.thenThrow(RuntimeException.class);
+
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> cart.get(),
+                "cart.get() should throw exception but it doesn`t!"
+        );
+
+        assertTrue(thrown.getMessage().contains("Unknown product"));
+    }
+
+    @Test
+    void testGetCallsDataSourceReadThreeTime(){
+        Cart cart = createCart();
+
+        when(dataSource.read(anyChar()))
+                .thenReturn(new Product ('A', 15, 3, 30))
+                .thenReturn(new Product ('B', 15, 3, 30))
+                .thenReturn(new Product ('C', 15, 3, 30));
+
+        cart.get();
+
+        verify(dataSource).read('A');
         verify(dataSource, times(1)).read('B');
         verify(dataSource, times(1)).read('C');
-        //verify(dataSource, times(3)).read()
+
+        //verify(dataSource, times(3)).read(any());
+        //doNothing().when(dataSource).read(any());
     }
 }

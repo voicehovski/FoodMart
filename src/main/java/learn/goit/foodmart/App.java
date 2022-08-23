@@ -6,12 +6,19 @@ public class App {
     public static void main(String[] args) {
         System.out.println(new App().buy("ADDDACCABA"));
         System.out.println(new App().buy("ABCDABA"));
+        System.out.println(new App().buy("A"));
+        System.out.println(new App().buy("AA"));
+        System.out.println(new App().buy("AAA"));
+        System.out.println(new App().buy("AAAA"));
+        System.out.println(new App().buy("AAAAA"));
+        System.out.println(new App().buy("AAAAAA"));
+        System.out.println(new App().buy("AAAAAAA"));
         // Здесь будет предусмотренное исключение, поскольку артикула X в базе нет
         //System.out.println(new App().buy("ABCDABAX"));
         System.out.println(new App().buy(""));
     }
 
-    public int buy (String productIds) {
+    public double buy (String productIds) {
         Cart cart = new Cart (new DataSource());
         for (char id : productIds.toCharArray()) {
             cart .add ( id );
@@ -24,6 +31,6 @@ public class App {
             total += calculator .calc(product, item.getCount());
         }
 
-        return total;
+        return total/100.0;
     }
 }
